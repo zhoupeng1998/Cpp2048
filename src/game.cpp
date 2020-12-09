@@ -1,7 +1,11 @@
 #include <iostream>
 #include <iomanip>
 #include <algorithm>
+#ifdef _WIN32
+#include <conio.h>
+#else
 #include "getch.h"
+#endif
 #include "game.hpp"
 
 Game::Game () :
@@ -11,7 +15,11 @@ Game::Game () :
 }
 
 int Game::read_cmd () {
+#ifdef _WIN32
+    char c = getch();
+#else
     char c = _getch();
+#endif
     switch (c) {
         case 'w':
             return scroll_up(1);
@@ -21,6 +29,10 @@ int Game::read_cmd () {
             return scroll_down(1);
         case 'd':
             return scroll_right(1);
+#ifdef _WIN32
+        case 3:
+            exit(0);
+#endif
         }
     return 0;
 }
@@ -212,6 +224,7 @@ void Game::print_canvas () {
         }
         std::cout << std::endl << std::endl;
     }
+    std::cout << "Use WASD to control, Ctrl+C to exit." << std::endl;
     std::cout << std::endl;
 }
 
@@ -222,8 +235,16 @@ void Game::game_play () {
             auto coord = get_idle_coords();
             generate_new(coord);
         }
+#ifdef _WIN32
+        system("cls");
+#else
         system("clear");
+#endif
         print_canvas();
     }
     std::cout << "GAME OVER" << std::endl;
-    }
+#ifdef _WIN32
+    std::cout << "Press Enter to exit." << std::endl;
+    getchar();
+#endif
+}

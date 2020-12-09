@@ -6,7 +6,7 @@
 //  Copyright © 2018 ZP. All rights reserved.
 //
 
-#include "game.h"
+#include "game.hpp"
 
 int main(int argc, const char * argv[]) {
     Game g;
